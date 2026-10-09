@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omniflow - Document Hub</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+<section id="login-card" class="flow-card">
+  <h2>🔐 เข้าสู่ระบบ OmniFlow</h2>
+  <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
+      ระบุรหัสพนักงานตามแผนก (เช่น PRT, PUR, TECH, MKT, ACC, HR, ADMIN,IT)
+    </p>
+
+  <div id="login-status" class="status-badge hidden"></div>
+
+<div class="input-group">
+  <label for="username-input">รหัสพนักงาน (ID):</label>
+  <input type="text" id="username-input" placeholder="เช่น prt01, hr01, admin" required>
+</div>
+
+ <div class="input-group">
+  <label for="password-input">รหัสผ่าน (Password):</label>
+  <input type="password" id="password-input" placeholder="••••••••" required autofocus>
+</div>
+
+<div class="forgot-wrapper">
+  <a href="#" id="forgot-btn" class="forgot-link">ลืมรหัสผ่าน</a>
+</div>
+
+<button id="login-btn" class="btn-submit">🔓 เข้าสู่ระบบ</button>
+</section>
+
+<main id="app-card" class="flow-card hidden">
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <button id="menu-btn" style="background: none; border: none; font-size: 1.3rem; cursor: pointer; line-height: 1;">☰</button>
+    <span id="current-user-badge" class="count-badge">สิทธิ์: -</span>
+  </div>
+</div>
+    
+    <h2>📦 OmniFlow Hub</h2>
+    <div id="status-display" class="status-badge">สถานะ: รอการบันทึกเอกสาร</div>
+
+    <div class="input-group">
+      <label for="doc-name">ชื่อหรือเลขที่เอกสาร:</label>
+      <input type="text" id="doc-name" placeholder="เช่น po-6601 / เลขใบเบิกอะไหล่ / ใบวางบิล / ใบกำกับภาษี" required>
+    </div>
+
+    <div class="input-group">
+      <label for="dept-select">เลือกแผนกต้นเรื่อง:</label>
+      <select id="dept-select">
+      <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่</option>
+        <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
+        <option value="แผนกจัดซื้อ">🛒 แผนกจัดซื้อ</option>
+        <option value="แผนกบัญชี">🧮 แผนกบัญชี</option>
+        <option value="แผนกทั่วไป">📄 แผนกการตลาด</option>
+        <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
+        <option value="แผนกไอที">💻 แผนกไอที</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="target-dept-select">ส่งถึงแผนก (ปลายทาง):</label>
+      <select id="target-dept-select">
+        <option value="INTERNAL">📌 บันทึกใช้ภายในแผนก (แผนกตัวเอง)</option>
+        <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่</option>
+        <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
+        <option value="แผนกจัดซื้อ">🛒 แผนกจัดซื้อ</option>
+        <option value="แผนกบัญชี">🧮 แผนกบัญชี</option>
+        <option value="แผนกทั่วไป">📄 แผนกการตลาด</option>
+        <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
+        <option value="แผนกไอที">💻 แผนกไอที</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="doc-file">แนบไฟล์เอกสาร/รูปภาพ:</label>
+      <input type="file" id="doc-files" multiple accept=".pdf, image/*">
+    </div>
+
+
+    
+    <button id="save-btn" class="btn-submit">💾 บันทึกเอกสารด่วน</button>
+
+    <section class="log-section">
+      <div class="log-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+        <h3>📋 ประวัติเอกสารที่บันทึก</h3>
+        <span id="log-count" class="count-badge">0 รายการ</span>
+      </div>
+
+    <button id="clear-btn" class="btn-clear">🗑️ ล้างทั้งหมด</button>
+      </div>
+
+      <div id="log-list" class="log-container"></div>
+    </section>
+  </main>
+
+  <section id="file-card" class="flow-card hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="sub-menu-btn" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">☰</button>
+        <span class="count-badge">📁 คลังเอกสาร & ดูไฟล์</span>
+      </div>
+
+      <button id="back-to-job-btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; cursor: pointer; font-weight: bold; color: #475569;">
+        ⬅️ กลับหน้าบันทึก
+      </button>
+    </div>
+
+    <h2>📂 รายการไฟล์ที่แนบในระบบ</h2>
+    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
+      ศูนย์รวมไฟล์เอกสารและรูปภาพที่ส่งต่อในระบบ
+    </p>
+
+    <div id="file-display-list" style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 8px; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+        ยังไม่มีการเปิดอ่านไฟล์ในขณะนี้
+      </div>
+    </div>
+  </section>
+    
+    <div id="toast" class="toast hidden">
+      <span id="toast-icon">✅</span>
+      <span id="toast-message">ข้อความ</span>
+    </div>
+
+    <div id="overlay" class="overlay hidden"></div>
+
+    <nav id="sidebar" class="sidebar hidden">
+      
+      <div class="sidebar-header">
+        <h3 id="brand-home-btn" style="cursor: pointer;" title="กดเพื่อกลับหน้าแรก">📦 OmniFlow</h3>
+        <button id="close-sidebar-btn" class="close-btn">✖</button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li id="nav-job-btn" class="menu-item active">📝 ที่เก็บงาน / บันทึก</li>
+        <li id="nav-file-btn" class="menu-item">📁 ดูไฟล์เอกสาร</li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="menu-item">⚙️ ตั้งค่าระบบ</div>
+        <div class="menu-item">👤 ผู้ใช้งาน</div>
+        <div id="logout-btn" class="menu-item" style="color: #ef4444; border-top: 1px solid #f1f5f9; margin-top: 4px;">
+          🚪 ออกจากระบบ
+        </div>
+      </div>
+    </nav>
+   
+    <script src="script.js"></script>
+  </body>
+</html>
