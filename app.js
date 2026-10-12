@@ -22,14 +22,22 @@ const targetDeptSelect = document.querySelector("#target-dept-select");
 const roleBadge = document.querySelector("#current-user-badge");
 const menuBtn = document.querySelector("#menu-btn");
 const sidebar = document.querySelector("#sidebar");
-const closeSidebarBtn = document.querySelector("#close-sidebar-btn")
+const closeSidebarBtn = document.querySelector("#close-sidebar-btn");
 const fileCard = document.querySelector("#file-card");
 const navJobBtn = document.querySelector("#nav-job-btn");
 const navFileBtn = document.querySelector("#nav-file-btn");
 const subMenuBtn = document.querySelector(".sub-menu-btn");
 const fileDisplayList = document.querySelector("#file-display-list");
 const overLay = document.querySelector("#overlay");
+const securityLevelSelect = document.querySelector("#security-level");
+const pinBackdrop = document.querySelector('#pin-backdrop');
+const pinModal = document.querySelector('#pin-modal');
+const supervisorPinInput = document.querySelector('#supervisor-pin');
+const confirmPinBtn = document.querySelector('#confirm-pin-btn');
+const cancelPinBtn = document.querySelector('#cancel-pin-btn');
 
+
+let pendingFileUrl = "";
 let toastTimer;
 
 function showToast(message, type = "success") {
@@ -127,92 +135,55 @@ forgotBtn.addEventListener("click", function(e) {
 let totalCount = 0;
 
 saveBtn.addEventListener('click', function() {
-  const docName = docNameInput.value;
-  const dept = deptSelect.value;
+  const docName = docNameInput.value.trim();
+  const senderDept = deptSelect.value;
   const targetDept = targetDeptSelect.value;
-
-  let routeDisplay = "";
-  let actualReceiver = "";
-
-  if (targetDept === "INTERNAL") {
-      routeDisplay = `<span style="color: #059669; font-weight: bold;">📌 ใช้ภายในแผนก</span>`;
-      actualReceiver = dept;
-    } else {
-      routeDisplay = `<span style="color: #2563eb; font-weight: bold;">🚀 ส่งต่อ: จาก ${dept} ➔ ถึง ${targetDept}</span>`;
-      actualReceiver = targetDept;
-    }
+  const secLevel = securityLevelSelect.value;
+  const files = docFilesInput.files;
 
   if (docName === "") {
-  showToast("กรุณากรอกชื่อหรือเลขที่เอกสารก่อน!", "error");
-  docNameInput.focus();
-  return;
-  }
-
-  if (docFilesInput.files.length === 0) {
-    showToast("กรุณาแนบไฟล์เอกสารหรือรูปภาพก่อนบันทึก!", "error");
-    docFilesInput.focus();
+    showToast("กรุณากรอกชื่อหรือเลขที่เอกสาร!", "error");
     return;
   }
 
-  let fileInfo = "📎 ไม่มีไฟล์แนบ";
-  const attachedFiles = docFilesInput.files;
+  let fileInfoHTML = `<span style="color: #888;">(ไม่มีไฟล์แนบ)</span>`;
+  let filePreviewBtn = "";
 
-  if (attachedFiles.length === 1) {
-    fileInfo = "📎 " + attachedFiles[0].name;
-  } else if (attachedFiles.length > 1) {
-    fileInfo = "📎 แนบแล้ว " + attachedFiles.length + " ไฟล์";
+  if (files.length > 0) {
+    const file = files[0];
+    const fileUrl = URL.createObjectURL(file);
+    fileInfoHTML = `📎 แนบ: <strong>${file.name}</strong> (${files.length} ไฟล์)`;
+    filePreviewBtn = `<button class="preview-btn" onclick="handleFilePreview('${fileUrl}', '${secLevel}')">👁️ เปิดดู</button>`;
   }
 
-  const newCardHTML = `
-    <div class="log-item" data-sender="${dept}" data-receiver="${actualReceiver}">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <strong>📄 ${docName}</strong>
-          <span style="font-size: 0.8rem; color: #64748b;">${fileInfo}</span>
-        </div>
-        <div style="font-size: 0.85rem; margin-top: 4px;">
-          ${routeDisplay}
-        </div>
+  const secBadge = secLevel === "CONFIDENTIAL" 
+    ? `<span style="background: #ffebee; color: #c62828; padding: 2px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #ffcdd2;">🔒 ลับเฉพาะ</span>` 
+    : `<span style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #c8e6c9;">🟢 ทั่วไป</span>`;
+
+  const cardHTML = `
+    <div class="log-card" data-sender="${senderDept}" data-receiver="${targetDept}" data-security="${secLevel}" style="border-left: 5px solid ${secLevel === 'CONFIDENTIAL' ? '#d32f2f' : '#1976d2'}; padding: 12px; margin-bottom: 10px; background: white; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <h4 style="margin: 0; color: #333;">📄 ${docName}</h4>
+        ${secBadge}
       </div>
-    `;
+      <p style="margin: 4px 0; font-size: 0.9rem; color: #555;">
+        <strong>ต้นเรื่อง:</strong> ${senderDept} ➔ <strong>ส่งถึง:</strong> ${targetDept === 'INTERNAL' ? '📌 บันทึกใช้ภายในแผนก' : targetDept}
+      </p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.85rem;">
+        <div>${fileInfoHTML}</div>
+        <div>${filePreviewBtn}</div>
+      </div>
+    </div>
+  `;
 
-  logList.innerHTML = newCardHTML + logList.innerHTML;
+  logList.innerHTML = cardHTML + logList.innerHTML;
 
-  totalCount = totalCount +1;
-  logCount.textContent = totalCount + "รายการ";
-
-  showToast("บันทึก [" + dept + "] เรียบร้อยแล้ว!", "success");
-
-  if (attachedFiles.length > 0) {
-      const fileURL = URL.createObjectURL(attachedFiles[0]);
-      
-      const fileCardHTML = `
-        <div class="file-item" data-sender="${dept}" data-receiver="${actualReceiver}" style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; padding: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 8px;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <strong style="font-size: 0.95rem; color: #1e293b;">📄 ${docName}</strong>
-              <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">
-                📎 ${attachedFiles[0].name}
-              </div>
-            </div>
-            <a href="${fileURL}" target="_blank" style="background: #eff6ff; color: #2563eb; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: bold; border: 1px solid #bfdbfe;">
-              👁️ เปิดดู
-            </a>
-          </div>
-          <div style="font-size: 0.8rem; margin-top: 8px; padding-top: 6px; border-top: 1px dashed #f1f5f9;">
-            ${routeDisplay}
-          </div>
-        </div>
-      `;
-
-      if (fileDisplayList.innerHTML.includes("ยังไม่มีการเปิดอ่านไฟล์")) {
-        fileDisplayList.innerHTML = "";
-      }
-      fileDisplayList.innerHTML = fileCardHTML + fileDisplayList.innerHTML;
-    }
+  totalCount++;
+  logCount.textContent = totalCount;
 
   docNameInput.value = "";
-  docNameInput.focus();
   docFilesInput.value = "";
+  showToast("บันทึกเอกสารเรียบร้อยแล้ว!", "success");
 
   targetDeptSelect.value = "INTERNAL";
 });
@@ -316,3 +287,47 @@ const backToJobBtn = document.querySelector("#back-to-job-btn");
 if (backToJobBtn) {
   backToJobBtn.addEventListener("click", goToJobPage);
 }
+
+function handleFilePreview(fileUrl, secLevel) {
+  if (secLevel === "CONFIDENTIAL") {
+
+    pendingFileUrl = fileUrl;
+    supervisorPinInput.value = "";
+    pinModal.classList.remove('hidden');
+    pinBackdrop.classList.remove('hidden');
+    supervisorPinInput.focus();
+  } else {
+    window.open(fileUrl);
+  }
+}
+
+cancelPinBtn.addEventListener('click', function() {
+  pinModal.classList.add('hidden');
+  pinBackdrop.classList.add('hidden');
+  pendingFileUrl = "";
+});
+
+pinBackdrop.addEventListener('click', function() {
+  pinModal.classList.add('hidden');
+  pinBackdrop.classList.add('hidden');
+  pendingFileUrl = "";
+});
+
+confirmPinBtn.addEventListener('click', function() {
+  const enteredPin = supervisorPinInput.value.trim();
+
+  if (enteredPin === "9999") {
+    pinModal.classList.add('hidden');
+    pinBackdrop.classList.add('hidden');
+    window.open(pendingFileUrl);
+    showToast("อนุมัติสิทธิ์หัวหน้าสำเร็จ! กำลังเปิดเอกสาร...", "success");
+    pendingFileUrl = "";
+
+  } else {
+   
+    showToast("รหัส PIN ไม่ถูกต้อง! กรุณาลองใหม่", "error");
+    supervisorPinInput.value = "";
+    supervisorPinInput.focus();
+  }
+});
+  
