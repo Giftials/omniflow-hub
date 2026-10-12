@@ -52,31 +52,84 @@
     </div>
 
     <div class="input-group">
-      <label for="dept-select">เลือกแผนกต้นเรื่อง:</label>
-      <select id="dept-select">
-      <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่</option>
-        <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
-        <option value="แผนกจัดซื้อ">🛒 แผนกจัดซื้อ</option>
-        <option value="แผนกบัญชี">🧮 แผนกบัญชี</option>
-        <option value="แผนกทั่วไป">📄 แผนกการตลาด</option>
-        <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
-        <option value="แผนกไอที">💻 แผนกไอที</option>
-      </select>
-    </div>
+  <label for="dept-select">เลือกแผนกต้นเรื่อง:</label>
+  <select id="dept-select">
+    <optgroup label="── ฝ่ายบริการ ศูนย์ซ่อม & รถใหม่ ──">
+      <option value="SA">🚗 แผนก SA (ที่ปรึกษาการบริการรับรถ)</option>
+      <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่และประดับยนต์</option>
+      <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
+      <option value="แผนกVDQI">🚘 แผนก VDQI (ตรวจรับรถใหม่ / แต่งรถ)</option>
+      <option value="แผนกเคลม">📋 แผนกเคลมประกันภัย / ไฟแนนซ์</option>
+      <option value="แผนกทะเบียน">📑 แผนกงานทะเบียนรถยนต์</option>
+      <option value="Call Center">📞 Call Center (นัดหมายเช็คระยะ)</option>
+      <option value="Service">🛠️ ฝ่ายบริการทั่วไป (Service)</option>
+    </optgroup>
 
-    <div class="input-group">
-      <label for="target-dept-select">ส่งถึงแผนก (ปลายทาง):</label>
-      <select id="target-dept-select">
-        <option value="INTERNAL">📌 บันทึกใช้ภายในแผนก (แผนกตัวเอง)</option>
-        <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่</option>
-        <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
-        <option value="แผนกจัดซื้อ">🛒 แผนกจัดซื้อ</option>
-        <option value="แผนกบัญชี">🧮 แผนกบัญชี</option>
-        <option value="แผนกทั่วไป">📄 แผนกการตลาด</option>
-        <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
-        <option value="แผนกไอที">💻 แผนกไอที</option>
-      </select>
-    </div>
+    <optgroup label="── ฝ่ายขาย (Sales Division) ──">
+      <option value="Sales Showroom">🛍️ Sales Showroom</option>
+      <option value="Sales Area">🛍️ Sales Area</option>
+      <option value="Sales Midtown">🛍️ Sales Midtown</option>
+      <option value="Sales Downtown">🛍️ Sales Downtown</option>
+      <option value="Sales Clix">🛍️ Sales Clix</option>
+      <option value="Sales Expert">🛍️ Sales Expert</option>
+      <option value="Sales Analysis">📊 Sales Analysis (วิเคราะห์ต้นทุน/ยอดขาย)</option>
+    </optgroup>
+
+    <optgroup label="── สำนักงาน สนับสนุน & ผู้บริหาร ──">
+      <option value="Marketing">📄 Marketing (การตลาด)</option>
+      <option value="GA">🛒 General Affair (GA - ธุรการทั่วไป)</option>
+      <option value="แผนกบัญชี">🧮 แผนกบัญชี / แคชเชียร์</option>
+      <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
+      <option value="IT">💻 แผนก IT</option>
+      <option value="ผู้บริหาร">👔 ผู้บริหาร</option>
+    </optgroup>
+  </select>
+</div>
+
+<div class="input-group">
+  <label for="target-dept-select">ส่งถึงแผนก (ปลายทาง):</label>
+  <select id="target-dept-select">
+    <option value="INTERNAL">📌 บันทึกใช้ภายในแผนก (แผนกตัวเอง)</option>
+
+    <optgroup label="── ฝ่ายบริการ ศูนย์ซ่อม & รถใหม่ ──">
+      <option value="SA">🚗 แผนก SA (ที่ปรึกษาการบริการรับรถ)</option>
+      <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่และประดับยนต์</option>
+      <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
+      <option value="แผนกVDQI">🚘 แผนก VDQI (ตรวจรับรถใหม่ / แต่งรถ)</option>
+      <option value="แผนกเคลม">📋 แผนกเคลมประกันภัย / ไฟแนนซ์</option>
+      <option value="แผนกทะเบียน">📑 แผนกงานทะเบียนรถยนต์</option>
+      <option value="Call Center">📞 Call Center (นัดหมายเช็คระยะ)</option>
+      <option value="Service">🛠️ ฝ่ายบริการทั่วไป (Service)</option>
+    </optgroup>
+
+    <optgroup label="── ฝ่ายขาย (Sales Division) ──">
+      <option value="Sales Showroom">🛍️ Sales Showroom</option>
+      <option value="Sales Area">🛍️ Sales Area</option>
+      <option value="Sales Midtown">🛍️ Sales Midtown</option>
+      <option value="Sales Downtown">🛍️ Sales Downtown</option>
+      <option value="Sales Clix">🛍️ Sales Clix</option>
+      <option value="Sales Expert">🛍️ Sales Expert</option>
+      <option value="Sales Analysis">📊 Sales Analysis (วิเคราะห์ต้นทุน/ยอดขาย)</option>
+    </optgroup>
+
+    <optgroup label="── สำนักงาน สนับสนุน & ผู้บริหาร ──">
+      <option value="Marketing">📄 Marketing (การตลาด)</option>
+      <option value="GA">🛒 General Affair (GA - ธุรการทั่วไป)</option>
+      <option value="แผนกบัญชี">🧮 แผนกบัญชี / แคชเชียร์</option>
+      <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
+      <option value="IT">💻 แผนก IT</option>
+      <option value="ผู้บริหาร">👔 ผู้บริหาร</option>
+    </optgroup>
+  </select>
+
+  <div class="input-group">
+    <label for="security-level">ระดับชั้นความลับของเอกสาร:</label>
+    <select id="security-level">
+      <option value="NORMAL">🟢 ทั่วไป (เปิดอ่านได้ปกติ)</option>
+      <option value="CONFIDENTIAL">🔒 ลับเฉพาะ (ต้องยืนยันรหัส PIN หัวหน้า)</option>
+    </select>
+  </div>
+</div>
 
     <div class="input-group">
       <label for="doc-file">แนบไฟล์เอกสาร/รูปภาพ:</label>
@@ -152,6 +205,21 @@
         </div>
       </div>
     </nav>
+
+    <div id="pin-backdrop" class="hidden"></div>
+    <div id="pin-modal" class="hidden">
+      <h3>🔒 ยืนยันสิทธิ์หัวหน้าแผนก</h3>
+      <p>เอกสารนี้เป็นความลับ กรุณากรอกรหัส PIN 4 หลัก:</p>
+
+      <input type="password" id="supervisor-pin" maxlength="4" placeholder="••••" style="font-size: 1.5rem; text-align: center; letter-spacing: 5px; width: 120px; padding: 8px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc;">
+
+    <div>
+
+      <button id="confirm-pin-btn" style="background: #2e7d32; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">✅ ยืนยัน</button>
+      <button id="cancel-pin-btn" style="background: #757575; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">❌ ยกเลิก</button>
+    </div>
+  </div>
+    
    
     <script src="script.js"></script>
   </body>
