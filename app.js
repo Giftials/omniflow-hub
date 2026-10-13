@@ -78,9 +78,10 @@ roleBadge.textContent = "สิทธิ์: " + badgeText;
   filterLogs();
 }
 
-loginBtn.addEventListener('click', function() {
-  const user = usernameInput.value;
-  const pass = passwordInput.value;
+loginBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+  const user = usernameInput.value.trim();
+  const pass = passwordInput.value.trim();
 
   if (user === "prt01" && pass === "1234") {
     openApp("⚙️ แผนกอะไหล่", "แผนกอะไหล่");
@@ -143,6 +144,10 @@ saveBtn.addEventListener('click', function() {
 
   if (docName === "") {
     showToast("กรุณากรอกชื่อหรือเลขที่เอกสาร!", "error");
+    return;
+  }
+if (!files || files.length === 0) {
+    showToast("กรุณาแนบไฟล์เอกสารหรือรูปภาพ!", "error");
     return;
   }
 
