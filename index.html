@@ -133,7 +133,7 @@
 
     <div class="input-group">
       <label for="doc-file">แนบไฟล์เอกสาร/รูปภาพ:</label>
-      <input type="file" id="doc-files" multiple accept=".pdf, image/*" required>
+      <input type="file" id="doc-files" multiple accept=".pdf, image/*, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .txt" required>
     </div>
 
 
@@ -214,9 +214,20 @@
       <input type="password" id="supervisor-pin" maxlength="4" placeholder="••••" style="font-size: 1.5rem; text-align: center; letter-spacing: 5px; width: 120px; padding: 8px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc;">
 
     <div>
-
       <button id="confirm-pin-btn" style="background: #2e7d32; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">✅ ยืนยัน</button>
       <button id="cancel-pin-btn" style="background: #757575; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">❌ ยกเลิก</button>
+    </div>
+  </div>
+
+  <div id="preview-backdrop" class="hidden"></div>
+  <div id="preview-modal" class="hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <h3 style="margin: 0;">👁️ เอกสารพรีวิวความปลอดภัย</h3>
+      <button id="close-preview-btn" style="background: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">❌ ปิด</button>
+    </div>
+  <div class="preview-container">
+    <div id="watermark-overlay"></div>
+    <iframe id="preview-frame" src=""></iframe>
     </div>
   </div>
     
