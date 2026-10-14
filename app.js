@@ -35,7 +35,11 @@ const pinModal = document.querySelector('#pin-modal');
 const supervisorPinInput = document.querySelector('#supervisor-pin');
 const confirmPinBtn = document.querySelector('#confirm-pin-btn');
 const cancelPinBtn = document.querySelector('#cancel-pin-btn');
-
+const previewBackdrop = document.querySelector('#preview-backdrop');
+const previewModal = document.querySelector('#preview-modal');
+const previewFrame = document.querySelector('#preview-frame');
+const watermarkOverlay = document.querySelector('#watermark-overlay');
+const closePreviewBtn = document.querySelector('#close-preview-btn');
 
 let pendingFileUrl = "";
 let toastTimer;
@@ -65,12 +69,19 @@ let currentLoggedInDept = "";
 
 function openApp(badgeText, deptName) {
   currentLoggedInDept = deptName;
+  roleBadge.textContent = "สิทธิ์: " + badgeText;
 
-roleBadge.textContent = "สิทธิ์: " + badgeText;
-
-  if (deptName !== "ADMIN") {
+  if (deptName !== "all") {
     deptSelect.value = deptName;
+    deptSelect.disabled = true; 
+  } else {
+    deptSelect.disabled = false;
   }
+
+  for (const opt of targetDeptSelect.options) {
+    opt.hidden = (opt.value === deptName && deptName !== "all");
+  }
+  targetDeptSelect.value = "INTERNAL";
 
   loginCard.classList.add("hidden");
   appCard.classList.remove("hidden");
@@ -78,42 +89,42 @@ roleBadge.textContent = "สิทธิ์: " + badgeText;
   filterLogs();
 }
 
+const userAccounts = {
+  "sa01": { pass: "1234", badge: "🚗 SA รับรถ", dept: "SA" },
+  "prt01": { pass: "1234", badge: "⚙️ แผนกอะไหล่", dept: "แผนกอะไหล่" },
+  "tech01": { pass: "1234", badge: "🔧 แผนกช่างเทคนิค", dept: "แผนกช่าง" },
+  "vdqi01": { pass: "1234", badge: "🚘 แผนก VDQI", dept: "แผนกVDQI" },
+  "claim01": { pass: "1234", badge: "📋 แผนกเคลมประกัน", dept: "แผนกเคลม" },
+  "reg01": { pass: "1234", badge: "📑 แผนกงานทะเบียน", dept: "แผนกทะเบียน" },
+  "call01": { pass: "1234", badge: "📞 Call Center", dept: "Call Center" },
+
+  "sale_show": { pass: "1234", badge: "🛍️ Sales Showroom", dept: "Sales Showroom" },
+  "sale_ana": { pass: "1234", badge: "📊 Sales Analysis (ต้นทุน)", dept: "Sales Analysis" },
+
+  "acc01": { pass: "1234", badge: "🧮 แผนกบัญชี", dept: "แผนกบัญชี" },
+  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "GA" },
+  "it01": { pass: "1234", badge: "💻 แผนก IT", dept: "IT" },
+  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "all" }
+};
+
 loginBtn.addEventListener('click', function(e) {
   e.preventDefault();
   const user = usernameInput.value.trim();
   const pass = passwordInput.value.trim();
 
-  if (user === "prt01" && pass === "1234") {
-    openApp("⚙️ แผนกอะไหล่", "แผนกอะไหล่");
+  const account = userAccounts[user];
 
-  } else if (user === "pur01" && pass === "pur333") {
-    openApp("🛒 แผนกจัดซื้อ", "แผนกจัดซื้อ");
-
-  } else if (user === "tech01" && pass === "5678") {
-    openApp("🔧 แผนกช่างเทคนิค", "แผนกช่างเทคนิค");
-
-  } else if (user === "mkt01" && pass === "mkt111") {
-    openApp("📄 แผนกการตลาด", "แผนกการตลาด");
-
-  } else if (user === "acc01" && pass === "acc222") {
-    openApp("📠 แผนกบัญชี", "แผนกบัญชี");
-
-  } else if (user === "hr01" && pass === "hr888") {
-    openApp("👩‍💼 แผนกบุคคล", "แผนกบุคคล");
-
-  } else if (user === "admin" && pass === "admin99") {
-    openApp("👑 ผู้ดูแลระบบ (ADMIN)", "all");
-
-  } else if (user === "it01" && pass === "it777") {
-    openApp("💻 แผนกไอที", "แผนกไอที");    
-
+  if (account && account.pass === pass) {
+    openApp(account.badge, account.dept);
+    showToast(`ยินดีต้อนรับ ${account.badge}!`, "success");
+    passwordInput.value = "";
   } else {
-
-    showToast("รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง!", "error");
+    showToast("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!", "error");
     passwordInput.value = "";
     passwordInput.focus();
   }
 });
+
 
 logoutBtn.addEventListener('click', function() {
   appCard.classList.add('hidden'); 
@@ -294,15 +305,15 @@ if (backToJobBtn) {
 }
 
 function handleFilePreview(fileUrl, secLevel) {
-  if (secLevel === "CONFIDENTIAL") {
+  if (secLevel === "CONFIDENTIAL" && currentLoggedInDept !== "all") {
 
-    pendingFileUrl = fileUrl;
+      pendingFileUrl = fileUrl;
     supervisorPinInput.value = "";
     pinModal.classList.remove('hidden');
     pinBackdrop.classList.remove('hidden');
     supervisorPinInput.focus();
   } else {
-    window.open(fileUrl);
+   openSecurePreview(fileUrl);
   }
 }
 
@@ -336,3 +347,29 @@ confirmPinBtn.addEventListener('click', function() {
   }
 });
   
+function openSecurePreview(fileUrl) {
+  const now = new Date().toLocaleString('th-TH');
+
+  watermarkOverlay.innerHTML = `
+    🔒 CONFIDENTIAL DOCUMENT<br>
+    ผู้เปิดอ่าน: ${currentLoggedInDept}<br>
+    เวลา: ${now}
+  `;
+
+  previewFrame.src = fileUrl;
+  previewModal.classList.remove('hidden');
+  previewBackdrop.classList.remove('hidden'); 
+}
+
+closePreviewBtn.addEventListener('click', function() {
+  previewModal.classList.add('hidden');
+  previewBackdrop.classList.add('hidden');
+  previewFrame.src = "";
+});
+
+previewBackdrop.addEventListener('click', function() {
+  previewModal.classList.add('hidden');
+  previewBackdrop.classList.add('hidden');
+  previewFrame.src = "";
+});
+
