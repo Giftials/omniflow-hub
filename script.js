@@ -159,7 +159,7 @@ let totalCount = 0;
 
 saveBtn.addEventListener('click', function() {
   const docName = docNameInput.value.trim();
-  const senderDept = deptSelect.value;
+  const senderDept = currentLoggedInDept;
   const targetDept = targetDeptSelect.value;
   const secLevel = securityLevelSelect.value;
   const files = docFilesInput.files;
