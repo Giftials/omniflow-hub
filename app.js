@@ -99,12 +99,12 @@ const userAccounts = {
   "call01": { pass: "1234", badge: "📞 Call Center", dept: "Call Center" },
 
   "sale_show": { pass: "1234", badge: "🛍️ Sales Showroom", dept: "Sales Showroom" },
-  "sale_ana": { pass: "1234", badge: "📊 Sales Analysis (ต้นทุน)", dept: "Sales Analysis" },
+  "sale_ana": { pass: "1234", badge: "📊 Sales Analysis (ต้นทุน)", dept: "Sales Analysis(ต้นทุน)" },
 
   "acc01": { pass: "1234", badge: "🧮 แผนกบัญชี", dept: "แผนกบัญชี" },
-  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "GA" },
+  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "ธุรการ" },
   "it01": { pass: "1234", badge: "💻 แผนก IT", dept: "IT" },
-  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "all" }
+  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "ผู้บริหาร" }
 };
 
 loginBtn.addEventListener('click', function(e) {
@@ -264,6 +264,7 @@ navFileBtn.addEventListener("click", function() {
   navFileBtn.classList.add("active");
 
   sidebar.classList.add("hidden");
+  overLay.classList.add('hidden');
 });
 
 navJobBtn.addEventListener("click", function() {
@@ -271,9 +272,10 @@ navJobBtn.addEventListener("click", function() {
   appCard.classList.remove("hidden");
 
   navFileBtn.classList.remove("active");
-  navJobBtn.classList.add("hidden");
+  navJobBtn.classList.add("active");
 
   sidebar.classList.add("hidden");
+  overLay.classList.add('hidden');
 });
 
 if (subMenuBtn) {
