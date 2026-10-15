@@ -111,7 +111,7 @@ const userAccounts = {
   
 //──3.สำนักงาน สนับสนุน ผู้บริหาร
   "mkt01": { pass: "1234", badge: "📄 Marketing (การตลาด)", dept: "แผนกการตลาด" },
-  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "แผนกธุรกาน" },
+  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "แผนกธุรการ" },
   "acc01": { pass: "1234", badge: "🧮 แผนกบัญชี / แคชเชียร์", dept: "แผนกบัญชี" },
   "hr01": { pass: "1234", badge: "👥 แผนกบุคคล", dept: "แผนกบุคคล" },
   "it01": { pass: "1234", badge: "💻 แผนก IT", dept: "IT" },
@@ -207,7 +207,7 @@ if (!files || files.length === 0) {
 
   if (files.length > 0) {
     const fileCardItem = `
-      <div class="file-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
+      <div class="file-item" data-sender="${senderDept}" data-receiver="${targetDept}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
         <div>
           <div style="font-weight: 700; color: var(--text-main);">📎 ${files[0].name}</div>
           <div style="font-size: 0.85rem; color: var(--text-sub); margin-top: 4px;">จากเอกสาร: <strong>${docName}</strong> (${senderDept} ➔ ${targetDept === 'INTERNAL' ? 'ใช้ภายในแผนก' : targetDept})</div>
@@ -252,16 +252,20 @@ clearBtn.addEventListener('click', function() {
 
 
 function filterLogs() {
-  const allItems = document.querySelectorAll(".log-item, .file-item");
-  
+  // 1. ดึงทั้งการ์ดงาน (.log-card) และการ์ดไฟล์ (.file-item) มาตรวจพร้อมกัน
+  const allItems = document.querySelectorAll(".log-card, .file-item");
+
   allItems.forEach(function(item) {
     const sender = item.getAttribute("data-sender");
     const receiver = item.getAttribute("data-receiver");
-    
-    if (currentLoggedInDept === "ADMIN") {
+
+    // 2. ถ้าเป็นแอดมิน (all หรือ ADMIN): มองเห็นครบทุกอย่าง 100%
+    if (currentLoggedInDept === "all" || currentLoggedInDept === "ADMIN") {
       item.classList.remove("hidden");
-    } else if (sender === currentLoggedInDept || receiver === currentLoggedInDept) {
+    // 3. ถ้าเป็นคนส่ง หรือคนรับ หรือเป็นงานใช้ภายในแผนกตัวเอง: ให้มองเห็นได้
+    } else if (sender === currentLoggedInDept || receiver === currentLoggedInDept || (receiver === "INTERNAL" && sender === currentLoggedInDept)) {
       item.classList.remove("hidden");
+    // 4. ถ้าเป็นแผนกอื่นที่ไม่เกี่ยวข้อง: สั่งซ่อนทันที!
     } else {
       item.classList.add("hidden");
     }
