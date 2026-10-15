@@ -205,6 +205,27 @@ if (!files || files.length === 0) {
 
   logList.innerHTML = cardHTML + logList.innerHTML;
 
+  if (files.length > 0) {
+    const fileCardItem = `
+      <div class="file-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
+        <div>
+          <div style="font-weight: 700; color: var(--text-main);">📎 ${files[0].name}</div>
+          <div style="font-size: 0.85rem; color: var(--text-sub); margin-top: 4px;">จากเอกสาร: <strong>${docName}</strong> (${senderDept} ➔ ${targetDept === 'INTERNAL' ? 'ใช้ภายในแผนก' : targetDept})</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          ${secBadge}
+          ${filePreviewBtn}
+        </div>
+      </div>
+    `;
+
+    if (fileDisplayList.innerHTML.includes("ยังไม่มี")) {
+      fileDisplayList.innerHTML = "";
+    }
+    
+    fileDisplayList.innerHTML = fileCardItem + fileDisplayList.innerHTML;
+  }
+
   totalCount++;
   logCount.textContent = totalCount;
 
