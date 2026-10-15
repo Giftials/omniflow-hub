@@ -19,10 +19,11 @@
     <li><b>SA / VDQI:</b> บริการ</li>
     <li><b>PRT / TECH:</b> อะไหล่/ช่าง</li>
     <li><b>CLAIM / CALL:</b> เคลม/นัดหมาย</li>
-    <li><b>SALE_SHOW:</b> ฝ่ายขาย</li>
+    <li><b>SALE_SHOW/ SALE_ANA:</b> ฝ่ายขาย</li>
     <li><b>ACC / GA / IT:</b> สำนักงาน</li>
     <li><b>ADMIN:</b> ผู้บริหาร</li>
   </ul>
+  <p style="text-align: center; font-size: 0.85rem; color: red;">*รหัสผ่านเข้าใช้งาน 1234*</p> <!--ทำไว้ให้คนเข้าทดสอบดูก่อน เดี๋ยวผลงานจริงเราค่อยลบออก-->
    </details> 
 
   <div id="login-status" class="status-badge hidden"></div>
@@ -171,10 +172,6 @@
         <button class="sub-menu-btn" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">☰</button>
         <span class="count-badge">📁 คลังเอกสาร & ดูไฟล์</span>
       </div>
-
-      <button id="back-to-job-btn" style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; cursor: pointer; font-weight: bold; color: #475569;">
-        ⬅️ กลับหน้าบันทึก
-      </button>
     </div>
 
     <h2>📂 รายการไฟล์ที่แนบในระบบ</h2>
@@ -206,6 +203,14 @@
       <ul class="sidebar-menu">
         <li id="nav-job-btn" class="menu-item active">📝 ที่เก็บงาน / บันทึก</li>
         <li id="nav-file-btn" class="menu-item">📁 ดูไฟล์เอกสาร</li>
+        <li class="menu-item" style="display: flex; justify-content: space-between; align-items: center;">
+         <span>🔔 การแจ้งเตือนงาน</span>
+         <span style="background: #ef4444; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 7px; border-radius: 9999px;">ใหม่</span>
+        </li>
+
+        <li class="menu-item" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScV4ub6Y2kveQAcawZspMHVhH_2n81-aVuwc7vNIz6R1vKOyg/viewform?usp=dialog', '_blank')" style="color: #2563eb; background: #eff6ff; border: 1px dashed #bfdbfe;">
+          📝 ส่งข้อเสนอแนะ (แบบฟอร์ม)
+        </li>
       </ul>
 
       <div class="sidebar-footer">
