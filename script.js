@@ -118,7 +118,6 @@ const userAccounts = {
   "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "ADMIN" }
 };
 
-
 loginBtn.addEventListener('click', function(e) {
   e.preventDefault();
   const user = usernameInput.value.trim();
