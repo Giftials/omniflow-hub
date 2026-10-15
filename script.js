@@ -90,6 +90,7 @@ function openApp(badgeText, deptName) {
 }
 
 const userAccounts = {
+  //──1.ฝ่ายบริการ ศูนย์ซ่อม และ รถใหม่──
   "sa01": { pass: "1234", badge: "🚗 SA รับรถ", dept: "SA" },
   "prt01": { pass: "1234", badge: "⚙️ แผนกอะไหล่", dept: "แผนกอะไหล่" },
   "tech01": { pass: "1234", badge: "🔧 แผนกช่างเทคนิค", dept: "แผนกช่าง" },
@@ -97,15 +98,26 @@ const userAccounts = {
   "claim01": { pass: "1234", badge: "📋 แผนกเคลมประกัน", dept: "แผนกเคลม" },
   "reg01": { pass: "1234", badge: "📑 แผนกงานทะเบียน", dept: "แผนกทะเบียน" },
   "call01": { pass: "1234", badge: "📞 Call Center", dept: "Call Center" },
-
+  "service01": { pass: "1234", badge: "🛠️ ฝ่ายบริการทั่วไป", dept: "Service" },
+  
+//──2.ฝ่ายขาย 7 สายงาน
   "sale_show": { pass: "1234", badge: "🛍️ Sales Showroom", dept: "Sales Showroom" },
-  "sale_ana": { pass: "1234", badge: "📊 Sales Analysis (ต้นทุน)", dept: "Sales Analysis(ต้นทุน)" },
-
-  "acc01": { pass: "1234", badge: "🧮 แผนกบัญชี", dept: "แผนกบัญชี" },
-  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "ธุรการ" },
+  "sale_area": { pass: "1234", badge: "🛍️ Sales Area", dept: "Sales Area" },
+  "sale_mid": { pass: "1234", badge: "🛍️ Sales Midtown", dept: "Sales Midtown" },
+  "sale_down": { pass: "1234", badge: "🛍️ Sales Downtown", dept: "Sales Downtown" },
+  "sale_clix": { pass: "1234", badge: "🛍️ Sales Clix", dept: "Sales Clix" },
+  "sale_exp": { pass: "1234", badge: "🛍️ Sales Expert", dept: "Sales Expert" },
+  "sale_ana": { pass: "1234", badge: "📊 Sales Analysis (ต้นทุน)", dept: "Sales Analysis" },
+  
+//──3.สำนักงาน สนับสนุน ผู้บริหาร
+  "mkt01": { pass: "1234", badge: "📄 Marketing (การตลาด)", dept: "แผนกการตลาด" },
+  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "แผนกธุรกาน" },
+  "acc01": { pass: "1234", badge: "🧮 แผนกบัญชี / แคชเชียร์", dept: "แผนกบัญชี" },
+  "hr01": { pass: "1234", badge: "👥 แผนกบุคคล", dept: "แผนกบุคคล" },
   "it01": { pass: "1234", badge: "💻 แผนก IT", dept: "IT" },
-  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "ผู้บริหาร" }
+  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "ADMIN" }
 };
+
 
 loginBtn.addEventListener('click', function(e) {
   e.preventDefault();
