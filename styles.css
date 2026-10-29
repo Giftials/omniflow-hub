@@ -1,5 +1,5 @@
 /* ===================================================
-   1. ยันต์กันerror และ ถาดสีตกแต่งสำเร็จรูปคุมธีม
+   1. RESET & VARIABLES (โทนดุดัน SLATE / MIDNIGHT / NEUMORPHIC)
    =================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -32,7 +32,7 @@ body {
 }
 
 /* ===================================================
-   2. ส่วนของหน้าต่างการทำงาน และ ความกว้างจอที่ 1400px และ โทรศัพท์ โดยใส่matgin-top 100px เพื่อให้หน้าจออยู่ตรงกลางไม่ชิดเกินไป 
+   2. NEUMORPHIC TACTILE CARDS (มิติเงาลึก ไม่แบนราบ)
    =================================================== */
 .flow-card, #app-card, #file-card, #login-card {
   background: var(--card-bg);
@@ -51,8 +51,14 @@ body {
   margin-top: 100px;
 }
 
+#app-card {
+  max-width: 680px !important;
+  width: 95% !important;
+  padding: 32px 36px !important;
+}
+
 /* ===================================================
-   3. หน้าต่างของแต่ละฟอร์ม
+   3. FORMS & BOLD INPUTS
    =================================================== */
 .input-group {
   margin-bottom: 18px;
@@ -97,7 +103,7 @@ body {
 }
 
 /* ===================================================
-   4. ชุดปุ่มกด ตอนยุบ และปุ่มต่างๆ ในเว็บ
+   4. TACTILE BUTTONS (ปุ่มมีน้ำหนัก สัมผัสยุบตัวตอนกด)
    =================================================== */
 button {
   font-family: inherit;
@@ -144,7 +150,7 @@ button:active {
 }
 
 /* ===================================================
-   5. แทบนำทาง ดูง่าย และ สะอาดตาเวลาใช้งาน
+   5. OFF-CANVAS NAVIGATOR DRAWER (เวอร์ชันสีขาวคลีนตา)
    =================================================== */
 .sidebar {
   position: fixed;
@@ -236,7 +242,7 @@ button:active {
 }
 
 /* ===================================================
-   6. ส่วนของ PIN 4หลัก / ลายน้ำหลังเอกสาร
+   6. MODALS, WATERMARK & SECURITY
    =================================================== */
 #pin-backdrop, #preview-backdrop {
   position: fixed;
@@ -320,7 +326,7 @@ button:active {
 }
 
 /* ===================================================
-   7. กล่องแจ้งเตือนต่างๆ
+   7. TOAST NOTIFICATION
    =================================================== */
 #toast {
   position: fixed;
@@ -341,7 +347,68 @@ button:active {
 }
 
 /* ===================================================
-   8. ยันต์แก้และแปะออก เวลาเทส
+   8. ปุ่ม3ขีดแทบNAVI 
+   =================================================== */
+.hamburger {
+  background: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 8px #d1d9e6, -3px -3px 8px #ffffff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger:active {
+  transform: scale(0.92);
+}
+
+.bar {
+  width: 22px;
+  height: 3px;
+  background-color: #334155;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.hamburger.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+} 
+
+/* ===================================================
+   9. ปุ่มเบลอ เอกสาร
+   =================================================== */
+
+.btn-blur {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.privacy-blur {
+  filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ===================================================
+   10. CASCADING ORDER GUARANTEE (กฎเหล็กล่างสุด)
    =================================================== */
 .hidden {
   display: none !important;
