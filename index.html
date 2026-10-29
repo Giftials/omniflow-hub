@@ -13,24 +13,12 @@
   <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
       เข้าสู่ระบบจัดการและสำรองเอกสารตามสิทธิ์แผนก
     </p>
-   <details style="font-size: 0.8rem; color: #64748b; margin-bottom: 16px; cursor: pointer;">
-    <summary>💡 ดูรหัสทดลองสำหรับผู้ทดสอบ (คลิก)</summary>
-    <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; padding: 10px 10px 10px 26px; background: #f1f5f9; border-radius: 6px;">
-    <li><b>SA / VDQI:</b> บริการ</li>
-    <li><b>PRT / TECH:</b> อะไหล่/ช่าง</li>
-    <li><b>CLAIM / CALL:</b> เคลม/นัดหมาย</li>
-    <li><b>SALE_SHOW/ SALE_ANA:</b> ฝ่ายขาย</li>
-    <li><b>ACC / GA / IT:</b> สำนักงาน</li>
-    <li><b>ADMIN:</b> ผู้บริหาร</li>
-  </ul>
-  <p style="text-align: center; font-size: 0.85rem; color: red;">*รหัสผ่านเข้าใช้งาน 1234*</p> <!--ทำไว้ให้คนเข้าทดสอบดูก่อน เดี๋ยวผลงานจริงเราค่อยลบออก-->
-   </details> 
 
   <div id="login-status" class="status-badge hidden"></div>
 
 <div class="input-group">
   <label for="username-input">รหัสพนักงาน (ID):</label>
-  <input type="text" id="username-input" placeholder="เช่น prt01, hr01, admin" required>
+  <input type="text" id="username-input" placeholder="เช่น prc01, hr01, admin" required>
 </div>
 
  <div class="input-group">
@@ -50,51 +38,45 @@
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
     
   <div style="display: flex; align-items: center; gap: 8px;">
-    <button id="menu-btn" style="background: none; border: none; font-size: 1.3rem; cursor: pointer; line-height: 1;">☰</button>
+    <button id="menu-btn" class="hamburger" aria-label="เมนู">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
     <span id="current-user-badge" class="count-badge">สิทธิ์: -</span>
   </div>
+<button id="blurToggleBtn" type="button" class="btn-blur" style="margin-left: auto;">
+  👁️ ม่านบังตา
+</button>
 </div>
     
     <h2>📦 OmniFlow Hub</h2>
     <div id="status-display" class="status-badge">สถานะ: รอการบันทึกเอกสาร</div>
 
     <div class="input-group">
-      <label for="doc-name">ชื่อหรือเลขที่เอกสาร:</label>
-      <input type="text" id="doc-name" placeholder="เช่น po-6601 / เลขใบเบิกอะไหล่ / ใบวางบิล / ใบกำกับภาษี" required>
+      <label for="doc-type-select">ประเภทหัวเอกสาร (1-Click SSOT):</label>
+      <select id="doc-type-select">
+        <option value="📑 ใบสั่งซื้อ / สั่งจ้าง (PO)">📑 ใบสั่งซื้อ / สั่งจ้าง (PO)</option>
+        <option value="🧾 ใบวางบิล / ใบเสร็จรับเงิน">🧾 ใบวางบิล / ใบเสร็จรับเงิน</option>
+        <option value="🏥 ใบลา / ใบรับรองแพทย์">🏥 ใบลา / ใบรับรองแพทย์</option>
+        <option value="📝 บันทึกข้อความภายใน / คำสั่งการ">📝 บันทึกข้อความภายใน / คำสั่งการ</option>
+        <option value="📦 ใบส่งมอบงาน / เอกสารทั่วไป">📦 ใบส่งมอบงาน / เอกสารทั่วไป</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="doc-name">ระบุชื่อเรื่อง / เลขที่เอกสาร:</label>
+      <input type="text" id="doc-name" placeholder="เช่น ค่าต่อสัญญาเซิร์ฟเวอร์ / เลขที่ PO-8899" required>
     </div>
 
     <div class="input-group">
   <label for="dept-select">เลือกแผนกต้นเรื่อง:</label>
   <select id="dept-select">
-    <optgroup label="── ฝ่ายบริการ ศูนย์ซ่อม & รถใหม่ ──">
-      <option value="SA">🚗 แผนก SA (ที่ปรึกษาการบริการรับรถ)</option>
-      <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่และประดับยนต์</option>
-      <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
-      <option value="แผนกVDQI">🚘 แผนก VDQI (ตรวจรับรถใหม่ / แต่งรถ)</option>
-      <option value="แผนกเคลม">📋 แผนกเคลมประกันภัย / ไฟแนนซ์</option>
-      <option value="แผนกทะเบียน">📑 แผนกงานทะเบียนรถยนต์</option>
-      <option value="Call Center">📞 Call Center (นัดหมายเช็คระยะ)</option>
-      <option value="Service">🛠️ ฝ่ายบริการทั่วไป (Service)</option>
-    </optgroup>
-
-    <optgroup label="── ฝ่ายขาย (Sales Division) ──">
-      <option value="Sales Showroom">🛍️ Sales Showroom</option>
-      <option value="Sales Area">🛍️ Sales Area</option>
-      <option value="Sales Midtown">🛍️ Sales Midtown</option>
-      <option value="Sales Downtown">🛍️ Sales Downtown</option>
-      <option value="Sales Clix">🛍️ Sales Clix</option>
-      <option value="Sales Expert">🛍️ Sales Expert</option>
-      <option value="Sales Analysis">📊 Sales Analysis (วิเคราะห์ต้นทุน/ยอดขาย)</option>
-    </optgroup>
-
-    <optgroup label="── สำนักงาน สนับสนุน & ผู้บริหาร ──">
-      <option value="Marketing">📄 Marketing (การตลาด)</option>
-      <option value="GA">🛒 General Affair (GA - ธุรการทั่วไป)</option>
-      <option value="แผนกบัญชี">🧮 แผนกบัญชี / แคชเชียร์</option>
-      <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
-      <option value="IT">💻 แผนก IT</option>
-      <option value="ผู้บริหาร">👔 ผู้บริหาร</option>
-    </optgroup>
+    <option value="procurement">🛒 ฝ่ายจัดซื้อและพัสดุ (Procurement)</option>
+        <option value="finance">💵 ฝ่ายการเงินและบัญชี (Finance & Accounting)</option>
+        <option value="hr">🧑‍💼 ฝ่ายทรัพยากรบุคคล (Human Resources - HR)</option>
+        <option value="management">🏢 ฝ่ายบริหารจัดการ (Executive Management)</option>
+    <option value="admin">👑 ผู้ดูแลระบบกลาง (System Admin)</option>
   </select>
 </div>
 
@@ -102,36 +84,11 @@
   <label for="target-dept-select">ส่งถึงแผนก (ปลายทาง):</label>
   <select id="target-dept-select">
     <option value="INTERNAL">📌 บันทึกใช้ภายในแผนก (แผนกตัวเอง)</option>
-
-    <optgroup label="── ฝ่ายบริการ ศูนย์ซ่อม & รถใหม่ ──">
-      <option value="SA">🚗 แผนก SA (ที่ปรึกษาการบริการรับรถ)</option>
-      <option value="แผนกอะไหล่">⚙️ แผนกอะไหล่และประดับยนต์</option>
-      <option value="แผนกช่าง">🔧 แผนกช่างเทคนิค</option>
-      <option value="แผนกVDQI">🚘 แผนก VDQI (ตรวจรับรถใหม่ / แต่งรถ)</option>
-      <option value="แผนกเคลม">📋 แผนกเคลมประกันภัย / ไฟแนนซ์</option>
-      <option value="แผนกทะเบียน">📑 แผนกงานทะเบียนรถยนต์</option>
-      <option value="Call Center">📞 Call Center (นัดหมายเช็คระยะ)</option>
-      <option value="Service">🛠️ ฝ่ายบริการทั่วไป (Service)</option>
-    </optgroup>
-
-    <optgroup label="── ฝ่ายขาย (Sales Division) ──">
-      <option value="Sales Showroom">🛍️ Sales Showroom</option>
-      <option value="Sales Area">🛍️ Sales Area</option>
-      <option value="Sales Midtown">🛍️ Sales Midtown</option>
-      <option value="Sales Downtown">🛍️ Sales Downtown</option>
-      <option value="Sales Clix">🛍️ Sales Clix</option>
-      <option value="Sales Expert">🛍️ Sales Expert</option>
-      <option value="Sales Analysis">📊 Sales Analysis (วิเคราะห์ต้นทุน/ยอดขาย)</option>
-    </optgroup>
-
-    <optgroup label="── สำนักงาน สนับสนุน & ผู้บริหาร ──">
-      <option value="Marketing">📄 Marketing (การตลาด)</option>
-      <option value="GA">🛒 General Affair (GA - ธุรการทั่วไป)</option>
-      <option value="แผนกบัญชี">🧮 แผนกบัญชี / แคชเชียร์</option>
-      <option value="แผนกบุคคล">👥 แผนกบุคคล</option>
-      <option value="IT">💻 แผนก IT</option>
-      <option value="ผู้บริหาร">👔 ผู้บริหาร</option>
-    </optgroup>
+        <option value="procurement">🛒 ฝ่ายจัดซื้อและพัสดุ (Procurement)</option>
+        <option value="finance">💵 ฝ่ายการเงินและบัญชี (Finance & Accounting)</option>
+        <option value="hr">🧑‍💼 ฝ่ายทรัพยากรบุคคล (Human Resources - HR)</option>
+        <option value="management">🏢 ฝ่ายบริหารจัดการ (Executive Management)</option>
+    <option value="admin">👑 ผู้ดูแลระบบกลาง (System Admin)</option>
   </select>
 
   <div class="input-group">
@@ -145,11 +102,10 @@
 
     <div class="input-group">
       <label for="doc-file">แนบไฟล์เอกสาร/รูปภาพ:</label>
-      <input type="file" id="doc-files" multiple accept=".pdf, image/*, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .txt" required>
+      <input type="file" id="doc-files" multiple accept=".pdf, image/*, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .txt, .zip" required>
+      <p id="sizeAlert" style="font-size: 12px; margin-top: 4px; font-weight: bold;"></p>
     </div>
 
-
-    
     <button id="save-btn" class="btn-submit">💾 บันทึกเอกสารด่วน</button>
 
     <section class="log-section">
@@ -172,6 +128,9 @@
         <button class="sub-menu-btn" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">☰</button>
         <span class="count-badge">📁 คลังเอกสาร & ดูไฟล์</span>
       </div>
+      <button id="blurToggleBtn" type="button" class="btn-blur" style="margin-left: auto;">
+        👁️ ม่านบังตา
+      </button>
     </div>
 
     <h2>📂 รายการไฟล์ที่แนบในระบบ</h2>
