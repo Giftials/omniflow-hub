@@ -40,6 +40,18 @@ const previewModal = document.querySelector('#preview-modal');
 const previewFrame = document.querySelector('#preview-frame');
 const watermarkOverlay = document.querySelector('#watermark-overlay');
 const closePreviewBtn = document.querySelector('#close-preview-btn');
+const docFileInput = document.querySelector("#doc-files");
+const sizeAlertMsg = document.querySelector("#sizeAlert");
+const deptSelector = document.querySelector("#dept-select");
+const statusBadge = document.querySelector("#status-display");
+const docTypeSelect = document.querySelector("#doc-type-select");
+const blurBtn = document.querySelector('#blurToggleBtn');
+const fileListBox = document.querySelector('#file-display-list');
+const logListBox = document.querySelector('#log-list') || document.querySelector('#history-list');
+const docCategorySelect = document.querySelector('#docType') || document.querySelector('#docCategory');
+const docTitleInput = document.querySelector('#docTitle') || document.querySelector('#docSubject');
+
+
 
 let pendingFileUrl = "";
 let toastTimer;
@@ -90,34 +102,14 @@ function openApp(badgeText, deptName) {
 }
 
 const userAccounts = {
-  //──1.ฝ่ายบริการ ศูนย์ซ่อม และ รถใหม่──
-  "sa01": { pass: "1234", badge: "🚗 SA รับรถ", dept: "SA" },
-  "prt01": { pass: "1234", badge: "⚙️ แผนกอะไหล่", dept: "แผนกอะไหล่" },
-  "tech01": { pass: "1234", badge: "🔧 แผนกช่างเทคนิค", dept: "แผนกช่าง" },
-  "vdqi01": { pass: "1234", badge: "🚘 แผนก VDQI", dept: "แผนกVDQI" },
-  "claim01": { pass: "1234", badge: "📋 แผนกเคลมประกัน", dept: "แผนกเคลม" },
-  "reg01": { pass: "1234", badge: "📑 แผนกงานทะเบียน", dept: "แผนกทะเบียน" },
-  "call01": { pass: "1234", badge: "📞 Call Center", dept: "Call Center" },
-  "service01": { pass: "1234", badge: "🛠️ ฝ่ายบริการทั่วไป", dept: "Service" },
-  
-//──2.ฝ่ายขาย 7 สายงาน
-  "sale_show": { pass: "1234", badge: "🛍️ Sales Showroom", dept: "Sales Showroom" },
-  "sale_area": { pass: "1234", badge: "🛍️ Sales Area", dept: "Sales Area" },
-  "sale_mid": { pass: "1234", badge: "🛍️ Sales Midtown", dept: "Sales Midtown" },
-  "sale_down": { pass: "1234", badge: "🛍️ Sales Downtown", dept: "Sales Downtown" },
-  "sale_clix": { pass: "1234", badge: "🛍️ Sales Clix", dept: "Sales Clix" },
-  "sale_exp": { pass: "1234", badge: "🛍️ Sales Expert", dept: "Sales Expert" },
-  "sale_ana": { pass: "1234", badge: "📊 Sales Analysis (ต้นทุน)", dept: "Sales Analysis" },
-  
-//──3.สำนักงาน สนับสนุน ผู้บริหาร
-  "mkt01": { pass: "1234", badge: "📄 Marketing (การตลาด)", dept: "แผนกการตลาด" },
-  "ga01": { pass: "1234", badge: "🛒 General Affair (GA)", dept: "แผนกธุรการ" },
-  "acc01": { pass: "1234", badge: "🧮 แผนกบัญชี / แคชเชียร์", dept: "แผนกบัญชี" },
-  "hr01": { pass: "1234", badge: "👥 แผนกบุคคล", dept: "แผนกบุคคล" },
-  "it01": { pass: "1234", badge: "💻 แผนก IT", dept: "IT" },
-  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "ADMIN" }
+ // 5 บทบาทระบบหลักเอกสาร
+ "prc01": { pass: "1234", badge: "🛒 จัดซื้อ (Procurement)", dept: "procurement" },
+  "fin01": { pass: "1234", badge: "💵 บัญชี/การเงิน (Finance)", dept: "finance" },
+  "hr01":  { pass: "1234", badge: "🧑‍💼 บุคคล (HR)", dept: "hr" },
+  "mgr01": { pass: "1234", badge: "🏢 ผู้บริหาร (Management)", dept: "management" },
+  "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "admin" }
 };
-
+//โซนระบบล็อกอิน
 loginBtn.addEventListener('click', function(e) {
   e.preventDefault();
   const user = usernameInput.value.trim();
@@ -126,6 +118,7 @@ loginBtn.addEventListener('click', function(e) {
   const account = userAccounts[user];
 
   if (account && account.pass === pass) {
+    unblurScreen();
     openApp(account.badge, account.dept);
     showToast(`ยินดีต้อนรับ ${account.badge}!`, "success");
     passwordInput.value = "";
@@ -133,6 +126,12 @@ loginBtn.addEventListener('click', function(e) {
     showToast("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!", "error");
     passwordInput.value = "";
     passwordInput.focus();
+  }
+});
+
+passwordInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    loginBtn.click();
   }
 });
 
@@ -158,6 +157,7 @@ forgotBtn.addEventListener("click", function(e) {
 let totalCount = 0;
 
 saveBtn.addEventListener('click', function() {
+  docTypeSelect.selectedIndex = 0;
   const docName = docNameInput.value.trim();
   const senderDept = currentLoggedInDept;
   const targetDept = targetDeptSelect.value;
@@ -215,6 +215,8 @@ if (!files || files.length === 0) {
         <div style="display: flex; align-items: center; gap: 10px;">
           ${secBadge}
           ${filePreviewBtn}
+          <button class="repo-download-btn" data-filename="${files[0].name}" style="background:#2563eb; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer;">📥 โหลด</button>
+          <button class="repo-del-btn" style="background:#fee2e2; color:#dc2626; border:none; padding:6px 10px; border-radius:6px; cursor:pointer;">❌ ลบ</button>
         </div>
       </div>
     `;
@@ -293,6 +295,7 @@ overLay.addEventListener("click", function() {
 });
 
 navFileBtn.addEventListener("click", function() {
+  unblurScreen();
   appCard.classList.add("hidden");
   fileCard.classList.remove("hidden");
 
@@ -304,6 +307,7 @@ navFileBtn.addEventListener("click", function() {
 });
 
 navJobBtn.addEventListener("click", function() {
+  unblurScreen();
   fileCard.classList.add("hidden");
   appCard.classList.remove("hidden");
 
@@ -391,7 +395,7 @@ function openSecurePreview(fileUrl) {
   watermarkOverlay.innerHTML = `
     🔒 CONFIDENTIAL DOCUMENT<br>
     ผู้เปิดอ่าน: ${currentLoggedInDept}<br>
-    เวลา: ${now}
+    วันที่และเวลา: ${now}
   `;
 
   previewFrame.src = fileUrl;
@@ -411,3 +415,151 @@ previewBackdrop.addEventListener('click', function() {
   previewFrame.src = "";
 });
 
+// --- อะไหล่ชิ้นที่ 5: แปลงร่างปุ่ม 3 ขีด และคืนร่างเมื่อลิ้นชักปิด ---
+if (menuBtn) {
+  menuBtn.addEventListener("click", function () {
+    menuBtn.classList.toggle("active");
+  });
+}
+
+if (closeSidebarBtn) {
+  closeSidebarBtn.addEventListener("click", function () {
+    menuBtn.classList.remove("active");
+  });
+}
+
+if (navFileBtn && navJobBtn) {
+  navFileBtn.addEventListener("click", function () {
+    menuBtn.classList.remove("active");
+  });
+  navJobBtn.addEventListener("click", function () {
+    menuBtn.classList.remove("active");
+  });
+}
+
+
+// ใช้ตัวแปรใหม่ดักฉากหลัง ป้องกันชื่อตัวแปรชนกัน
+const darkBackdrop = document.querySelector("#overlay");
+if (darkBackdrop) {
+  darkBackdrop.addEventListener("click", function () {
+    menuBtn.classList.remove("active");
+  });
+}
+
+if (docFileInput && sizeAlertMsg) {
+  docFileInput.addEventListener("change", function () {
+    const file = docFileInput.files[0];
+    if (file) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      if (file.size > 20 * 1024 * 1024) {
+        sizeAlertMsg.textContent = `⚠️ ไฟล์ใหญ่เกินไป (${sizeMB} MB) จำกัดไม่เกิน 20MB`;
+        sizeAlertMsg.style.color = "#ef4444";
+        docFileInput.value = ""; // ล้างค่าออก ป้องกันเซิร์ฟเวอร์ล่ม
+      } else {
+        sizeAlertMsg.textContent = `✅ ขนาดไฟล์ผ่าน (${sizeMB} MB)`;
+        sizeAlertMsg.style.color = "#16a34a";
+      }
+    }
+  });
+}
+
+if (deptSelector && statusBadge) {
+  deptSelector.addEventListener("change", function () {
+    statusBadge.textContent = `โหมดเอกสาร: ${deptSelector.options[deptSelector.selectedIndex].text}`;
+    statusBadge.style.color = "#0284c7";
+  });
+}
+
+if (docTypeSelect && statusDisplay) {
+  docTypeSelect.addEventListener("change", function () {
+    statusDisplay.textContent = `เอกสารที่กำลังทำ: ${docTypeSelect.value}`;
+    statusDisplay.style.color = "#0284c7";
+  });
+}
+
+// --- อะไหล่ชิ้นที่ 1 & 2: สั่งปุ่มดาวน์โหลด (Virtual Anchor) + ปุ่มลบในคลังเอกสาร ---
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("repo-download-btn")) {
+    const fileName = e.target.getAttribute("data-filename") || "OmniFlow_Doc.txt";
+    const link = document.createElement("a");
+    link.href = "data:text/plain;charset=utf-8," + encodeURIComponent("สำเนาเอกสารฉุกเฉิน: " + fileName);
+    link.download = fileName;
+    link.click();
+    showToast("ดาวน์โหลด " + fileName + " สำเร็จ!", "success");
+  }
+
+  if (e.target.classList.contains("repo-del-btn")) {
+    if (confirm("⚠️ ยืนยันการลบไฟล์นี้ออกจากคลังเอกสารใช่หรือไม่?")) {
+      const card = e.target.closest(".file-item");
+      if (card) card.remove();
+      showToast("ลบไฟล์ออกจากคลังเรียบร้อยแล้ว", "error");
+    }
+  }
+});
+
+// --- ระบบม่านบังตาฉุกเฉิน & Auto-Blur ปลอดภัย 100% ---
+// ฟังก์ชันกลาง: ปลดม่านเบลอ คืนความชัด
+function unblurScreen() {
+  fileListBox?.classList.remove('privacy-blur');
+  logListBox?.classList.remove('privacy-blur'); // 👈 ปลดเบลอกล่องประวัติ
+  document.querySelectorAll('.btn-blur').forEach(btn => {
+    btn.textContent = '👁️ ม่านบังตา';
+  });
+}
+
+// ฟังก์ชันกลาง: สั่งปิดม่านบังตา
+function blurScreen() {
+  fileListBox?.classList.add('privacy-blur');
+  logListBox?.classList.add('privacy-blur'); // 👈 สั่งเบลอกล่องประวัติตรงนี้เลย!
+  document.querySelectorAll('.btn-blur').forEach(btn => {
+    btn.textContent = '🙈 ม่านบังตาทำงาน';
+  });
+}
+
+// 1. กดปุ่มเปิด-ปิด ม่านบังตาด้วยตัวเอง
+blurBtn?.addEventListener('click', () => {
+  const isBlurred = fileListBox?.classList.contains('privacy-blur');
+  if (isBlurred) {
+    unblurScreen();
+  } else {
+    blurScreen();
+  }
+});
+
+// 2. ระบบ Auto-Blur จับเวลา (ขยับเมาส์/กดแป้น = ปลดเบลอทันที)
+let idleTimer;
+function handleUserActivity() {
+  // ถ้าม่านบังตาปิดอยู่ แล้วมีการขยับเมาส์หรือกดปุ่ม -> สั่งเปิดม่านทันที
+  if (fileListBox?.classList.contains('privacy-blur')) {
+    unblurScreen();
+  }
+
+  // รีเซ็ตเวลานับถอยหลังใหม่ (ตั้งไว้ 60 วินาที)
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    blurScreen();
+  }, 5000);
+}
+
+window.addEventListener('keydown', handleUserActivity);
+handleUserActivity(); // เริ่มจับเวลา
+
+docTypeSelect?.addEventListener('change', (e) => {
+  // ตรวจจับว่ามีคำว่า "ใบลา" อยู่ในตัวเลือกที่เลือกหรือไม่
+  if (e.target.value.includes('ใบลา')) {
+    docNameInput.value = '[ใบลา] ขอลาป่วย/ลากิจ - ';
+    docNameInput.focus(); // เด้งเคอร์เซอร์ไปรอให้พิมพ์ต่อทันที
+  }
+});
+
+// ดักจับปุ่มม่านบังตาทุกปุ่มในระบบ (ไม่ว่าจะอยู่หน้าคลังหรือหน้าบันทึก)
+document.querySelectorAll('.btn-blur').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const isBlurred = fileListBox?.classList.contains('privacy-blur');
+    if (isBlurred) {
+      unblurScreen();
+    } else {
+      blurScreen();
+    }
+  });
+});
