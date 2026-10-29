@@ -536,7 +536,7 @@ function handleUserActivity() {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     blurScreen();
-  }, 5000);
+  }, 120000);
 }
 
 window.addEventListener('keydown', handleUserActivity);
