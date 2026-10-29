@@ -119,6 +119,7 @@ loginBtn.addEventListener('click', function(e) {
 
   if (account && account.pass === pass) {
     unblurScreen();
+    menuBtn.classList.remove('active');
     openApp(account.badge, account.dept);
     showToast(`ยินดีต้อนรับ ${account.badge}!`, "success");
     passwordInput.value = "";
@@ -142,6 +143,7 @@ logoutBtn.addEventListener('click', function() {
 
   sidebar.classList.add('hidden');
   overLay.classList.add('hidden');
+  menuBtn.classList.remove('active');
 
   loginCard.classList.remove('hidden');
   usernameInput.value = "";
@@ -422,20 +424,16 @@ if (menuBtn) {
   });
 }
 
-if (closeSidebarBtn) {
-  closeSidebarBtn.addEventListener("click", function () {
-    menuBtn.classList.remove("active");
-  });
+// --- ฟังก์ชันปิด Sidebar คลีน 100% ปราบแฮมเบอร์เกอร์ค้าง ---
+function closeSidebar() {
+  sidebar?.classList.add('hidden');
+  overlay?.classList.add('hidden');
+  menuBtn?.classList.remove('active'); // บังคับคืนร่าง 3 ขีดเสมอ
 }
 
-if (navFileBtn && navJobBtn) {
-  navFileBtn.addEventListener("click", function () {
-    menuBtn.classList.remove("active");
-  });
-  navJobBtn.addEventListener("click", function () {
-    menuBtn.classList.remove("active");
-  });
-}
+// สั่งปิดเมนูเมื่อกดปุ่มกากบาท หรือกดพื้นที่สีเทาข้างนอก
+closeSidebarBtn?.addEventListener('click', closeSidebar);
+overlay?.addEventListener('click', closeSidebar);
 
 
 // ใช้ตัวแปรใหม่ดักฉากหลัง ป้องกันชื่อตัวแปรชนกัน
@@ -538,7 +536,7 @@ function handleUserActivity() {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     blurScreen();
-  }, 6000);
+  }, 5000);
 }
 
 window.addEventListener('keydown', handleUserActivity);
