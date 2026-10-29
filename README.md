@@ -3,7 +3,7 @@
 > ระบบบริหาร จัดการ และสำรองเอกสารฉุกเฉิน เพื่อแก้ปัญหาคอขวดของไดร์ฟกลาง และแก้ปัญหาไฟล์งานหมดอายุในแอปพลิเคชันส่งข้อความ
 
 ### 🔗 Deployment & UAT Links
-* 🌐 **Live Website (Production)**: [https://thanachotr.github.io/omniflow-hub/](https://thanachotr.github.io/omniflow-hub/)
+* 🌐 **Live Website (Production)**: [https://giftials.github.io/omniflow-hub/](https://giftials.github.io/omniflow-hub/)
 * 📝 **แบบฟอร์มประเมินระบบ (Prototype UAT Survey)**: [ร่วมทดสอบระบบและส่งข้อเสนอแนะที่นี่](https://docs.google.com/forms/d/e/1FAIpQLScV4ub6Y2kveQAcawZspMHVhH_2n81-aVUwc7vNiZ6R1vKOyg/viewform)
 
 ---
