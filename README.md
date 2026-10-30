@@ -17,9 +17,13 @@ id:hr01 (บุคคล)
 
 id:mgr01 (การจัดการ)
 
-id:admin
+password 1234
 
-password = 1234
+id:admin 
+password:admin123
+pin:9999
+
+
 ---
 
 > ⚠️ **คำชี้แจงและข้อตกลงในการทดสอบระบบ (Prototype Disclaimer & PDPA Compliance):**
