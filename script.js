@@ -1,3 +1,4 @@
+// โซนตัวแปร IDและClassต่างๆจากHTML
 const saveBtn = document.querySelector('#save-btn');
 const statusDisplay = document.querySelector('#status-display');
 const docNameInput = document.querySelector('#doc-name');
@@ -52,10 +53,10 @@ const docCategorySelect = document.querySelector('#docType') || document.querySe
 const docTitleInput = document.querySelector('#docTitle') || document.querySelector('#docSubject');
 
 
-
 let pendingFileUrl = "";
 let toastTimer;
 
+// ฟังก์ชั่นแจ้งเตือนต่างๆมีเวลานับถอยหลังหายเอง
 function showToast(message, type = "success") {
   toastMessage.textContent = message;
 
@@ -109,14 +110,14 @@ const userAccounts = {
   "mgr01": { pass: "1234", badge: "🏢 ผู้บริหาร (Management)", dept: "management" },
   "admin": { pass: "admin123", badge: "👑 ผู้ดูแลระบบ (ADMIN)", dept: "admin" }
 };
-//โซนระบบล็อกอิน
+// โซนระบบล็อกอิน
 loginBtn.addEventListener('click', function(e) {
   e.preventDefault();
   const user = usernameInput.value.trim();
   const pass = passwordInput.value.trim();
 
   const account = userAccounts[user];
-
+// ตรงนี้คือถ้ารหัสผ่าน จะมีแจ้งเตือนยินดีต้อนรับ และถ้าผิด จะขึ้นแจ้งเตือนอีกแบบ
   if (account && account.pass === pass) {
     unblurScreen();
     menuBtn.classList.remove('active');
@@ -129,14 +130,14 @@ loginBtn.addEventListener('click', function(e) {
     passwordInput.focus();
   }
 });
-
+// ฟังก์ชั่นตรงคือ เราสารถใส่รหัสผ่าน และ กดenterเข้าสู่ระบบได้เลย โดยไม่ต้องเลื่อนเมาส์ไปกด
 passwordInput.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     loginBtn.click();
   }
 });
 
-
+// โซนระบบล็อกเอ้าท์ออก
 logoutBtn.addEventListener('click', function() {
   appCard.classList.add('hidden'); 
   fileCard.classList.add('hidden');
@@ -150,14 +151,14 @@ logoutBtn.addEventListener('click', function() {
   passwordInput.value = "";
   usernameInput.focus();
 });
-
+// ปุ่มลืมรหัสผ่าน
 forgotBtn.addEventListener("click", function(e) {
   e.preventDefault();
   showToast("กรุณาติดต่อผู้ดูแลระบบ (ADMIN) เพื่อขอรับรหัสผ่านใหม่", "error");
 });
 
 let totalCount = 0;
-
+// ปุ่มเซฟงาน หรือ ปุ่มบันทุกเอกสาร ส่วนหน้าแรก
 saveBtn.addEventListener('click', function() {
   docTypeSelect.selectedIndex = 0;
   const docName = docNameInput.value.trim();
@@ -177,18 +178,18 @@ if (!files || files.length === 0) {
 
   let fileInfoHTML = `<span style="color: #888;">(ไม่มีไฟล์แนบ)</span>`;
   let filePreviewBtn = "";
-
+// ปุ่มพรีวิวไฟล์ที่ส่ง
   if (files.length > 0) {
     const file = files[0];
     const fileUrl = URL.createObjectURL(file);
     fileInfoHTML = `📎 แนบ: <strong>${file.name}</strong> (${files.length} ไฟล์)`;
     filePreviewBtn = `<button class="preview-btn" onclick="handleFilePreview('${fileUrl}', '${secLevel}')">👁️ เปิดดู</button>`;
   }
-
+// แทบเลือกความสำคัญของเอกสารแต่ละประเภท
   const secBadge = secLevel === "CONFIDENTIAL" 
     ? `<span style="background: #ffebee; color: #c62828; padding: 2px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #ffcdd2;">🔒 ลับเฉพาะ</span>` 
     : `<span style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #c8e6c9;">🟢 ทั่วไป</span>`;
-
+// แม่พิมพ์การ์ดประวัติเอกสาร (หน้าบันทึกด่วน) ดึงชื่อเรื่อง แผนก และระดับความลับมาประกอบร่าง
   const cardHTML = `
     <div class="log-card" data-sender="${senderDept}" data-receiver="${targetDept}" data-security="${secLevel}" style="border-left: 5px solid ${secLevel === 'CONFIDENTIAL' ? '#d32f2f' : '#1976d2'}; padding: 12px; margin-bottom: 10px; background: white; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -204,9 +205,9 @@ if (!files || files.length === 0) {
       </div>
     </div>
   `;
-
+// เอาการ์ดใหม่ไปเสียบไว้บนสุดของกล่องประวัติ
   logList.innerHTML = cardHTML + logList.innerHTML;
-
+// ถ้ามีการแนบไฟล์จริง ให้เสกการ์ดไฟล์พร้อมปุ่ม [โหลด] และ [ลบ] ส่งเข้าคลังเอกสาร
   if (files.length > 0) {
     const fileCardItem = `
       <div class="file-item" data-sender="${senderDept}" data-receiver="${targetDept}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
@@ -295,7 +296,7 @@ overLay.addEventListener("click", function() {
   sidebar.classList.add("hidden");
   overLay.classList.add("hidden");
 });
-
+// แทบด้านข้าง สำหรับในหน้าส่งไฟล์
 navFileBtn.addEventListener("click", function() {
   unblurScreen();
   appCard.classList.add("hidden");
@@ -307,7 +308,7 @@ navFileBtn.addEventListener("click", function() {
   sidebar.classList.add("hidden");
   overLay.classList.add('hidden');
 });
-
+// แทบด้านข้าง สำหรับในหน้าคลังเอกสาร
 navJobBtn.addEventListener("click", function() {
   unblurScreen();
   fileCard.classList.add("hidden");
@@ -336,13 +337,13 @@ function goToJobPage() {
   sidebar.classList.add("hidden");
   overLay.classList.add("hidden");        
 }
-
+// ไปหน้าคลังเอกสาร
 const brandHomeBtn = document.querySelector("#brand-home-btn");
 if (brandHomeBtn) {
   brandHomeBtn.addEventListener("click", goToJobPage);
 }
 
-
+// กลับจากหน้าคลังเอกสาร
 const backToJobBtn = document.querySelector("#back-to-job-btn");
 if (backToJobBtn) {
   backToJobBtn.addEventListener("click", goToJobPage);
@@ -372,7 +373,7 @@ pinBackdrop.addEventListener('click', function() {
   pinBackdrop.classList.add('hidden');
   pendingFileUrl = "";
 });
-
+// ระบบpinเอกสารความสำคัญ
 confirmPinBtn.addEventListener('click', function() {
   const enteredPin = supervisorPinInput.value.trim();
 
@@ -393,7 +394,7 @@ confirmPinBtn.addEventListener('click', function() {
   
 function openSecurePreview(fileUrl) {
   const now = new Date().toLocaleString('th-TH');
-
+// ลายน้ำหลังเอกสารตอนนดูพรีวิว ชื่อ แผนก วันที่และเวลา
   watermarkOverlay.innerHTML = `
     🔒 CONFIDENTIAL DOCUMENT<br>
     ผู้เปิดอ่าน: ${currentLoggedInDept}<br>
@@ -536,7 +537,7 @@ function handleUserActivity() {
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     blurScreen();
-  }, 120000);
+  }, 5000);
 }
 
 window.addEventListener('keydown', handleUserActivity);
