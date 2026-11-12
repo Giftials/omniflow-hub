@@ -164,8 +164,7 @@ function handleUserActivity() {
   }, 300000); //ปรับเวลาตรงนี้
 }
 
-window.addEventListener('keydown', handleUserActivity);
-window.addEventListener('mousemove', handleUserActivity); // [แก้บั๊ก #4] ขยับเมาส์ = ปลดเบลอ + รีเซ็ตเวลา
+window.addEventListener('keydown', handleUserActivity);// [แก้บั๊ก #4] ขยับเมาส์ = ปลดเบลอ + รีเซ็ตเวลา
 handleUserActivity(); // เริ่มจับเวลา
 
 // ---------- 3.4 ระบบ PIN หัวหน้า สำหรับเอกสารลับ ----------
