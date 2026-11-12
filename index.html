@@ -56,6 +56,8 @@
     <div class="input-group">
       <label for="doc-type-select">ประเภทหัวเอกสาร (1-Click SSOT):</label>
       <select id="doc-type-select">
+        <!-- [แก้ไข #3] เพิ่มตัวเลือกว่างเป็นตัวแรก เพราะ JS รีเซ็ตกลับไปที่ selectedIndex = 0 หลังกดบันทึก -->
+        <option value="" disabled selected>-- เลือกประเภทเอกสาร --</option>
         <option value="📑 ใบสั่งซื้อ / สั่งจ้าง (PO)">📑 ใบสั่งซื้อ / สั่งจ้าง (PO)</option>
         <option value="🧾 ใบวางบิล / ใบเสร็จรับเงิน">🧾 ใบวางบิล / ใบเสร็จรับเงิน</option>
         <option value="🏥 ใบลา / ใบรับรองแพทย์">🏥 ใบลา / ใบรับรองแพทย์</option>
@@ -90,6 +92,8 @@
         <option value="management">🏢 ฝ่ายบริหารจัดการ (Executive Management)</option>
     <option value="admin">👑 ผู้ดูแลระบบกลาง (System Admin)</option>
   </select>
+</div>
+<!-- [แก้ไข #4] ปิดกล่อง "ส่งถึงแผนก" ให้เรียบร้อย กล่อง "ระดับชั้นความลับ" จึงไม่ซ้อนอยู่ข้างในอีกต่อไป -->
 
   <div class="input-group">
     <label for="security-level">ระดับชั้นความลับของเอกสาร:</label>
@@ -98,10 +102,10 @@
       <option value="CONFIDENTIAL">🔒 ลับเฉพาะ (ต้องยืนยันรหัส PIN หัวหน้า)</option>
     </select>
   </div>
-</div>
 
     <div class="input-group">
-      <label for="doc-file">แนบไฟล์เอกสาร/รูปภาพ:</label>
+      <!-- [แก้ไข #2] แก้ for="doc-file" เป็น for="doc-files" ให้ตรงกับ id ของช่องแนบไฟล์ -->
+      <label for="doc-files">แนบไฟล์เอกสาร/รูปภาพ:</label>
       <input type="file" id="doc-files" multiple accept=".pdf, image/*, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv, .txt, .zip" required>
       <p id="sizeAlert" style="font-size: 12px; margin-top: 4px; font-weight: bold;"></p>
     </div>
@@ -128,7 +132,8 @@
         <button class="sub-menu-btn" style="background: none; border: none; font-size: 1.3rem; cursor: pointer;">☰</button>
         <span class="count-badge">📁 คลังเอกสาร & ดูไฟล์</span>
       </div>
-      <button id="blurToggleBtn" type="button" class="btn-blur" style="margin-left: auto;">
+      <!-- [แก้ไข #1] เปลี่ยน id ซ้ำ "blurToggleBtn" เป็น "blurToggleBtnFile" (ยังมี class btn-blur ให้ JS ดักฟังได้ตามเดิม) -->
+      <button id="blurToggleBtnFile" type="button" class="btn-blur" style="margin-left: auto;">
         👁️ ม่านบังตา
       </button>
     </div>
@@ -167,7 +172,7 @@
          <span style="background: #ef4444; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 7px; border-radius: 9999px;">ใหม่</span>
         </li>
 
-        <li class="menu-item" onclick="window.open('https://forms.gle/i5iEPtk7bBTN1eNe9', '_blank')" style="color: #2563eb; background: #eff6ff; border: 1px dashed #bfdbfe;">
+        <li class="menu-item" onclick="window.open('https://forms.gle/XGnRhhvYg9wa8wZGA', '_blank')" style="color: #2563eb; background: #eff6ff; border: 1px dashed #bfdbfe;">
           📝 ส่งข้อเสนอแนะ (แบบฟอร์ม)
         </li>
       </ul>
