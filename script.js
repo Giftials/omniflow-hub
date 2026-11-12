@@ -150,21 +150,21 @@ document.querySelectorAll('.btn-blur').forEach(btn => {
   });
 });
 
-// ---------- 3.3 Auto-Blur จับเวลา (ขยับเมาส์/กดแป้น = ปลดเบลอทันที) ----------
+// ---------- 3.3 Auto-Blur จับเวลา (กดแป้น = ปลดเบลอทันที) ----------
 function handleUserActivity() {
-  // ถ้าม่านบังตาปิดอยู่ แล้วมีการขยับเมาส์หรือกดปุ่ม -> สั่งเปิดม่านทันที
+  // ถ้าม่านบังตาปิดอยู่ แล้วมีกดปุ่ม -> สั่งเปิดม่านทันที
   if (fileListBox?.classList.contains('privacy-blur')) {
     unblurScreen();
   }
 
-  // รีเซ็ตเวลานับถอยหลังใหม่ (ปัจจุบันตั้งไว้ 30 วินาที = 30000 ms)
+  // รีเซ็ตเวลานับถอยหลังใหม่ (ปัจจุบันตั้งไว้ 300000 ms = 5 นาที | ถ้าต้องการ 30 วินาที ให้ใช้ 30000)
   clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     blurScreen();
   }, 300000); //ปรับเวลาตรงนี้
 }
 
-window.addEventListener('keydown', handleUserActivity);// [แก้บั๊ก #4] ขยับเมาส์ = ปลดเบลอ + รีเซ็ตเวลา
+window.addEventListener('keydown', handleUserActivity); // [แก้บั๊ก #4] กดเฉพาะแป้นพิมพ์ = ปลดเบลอ + รีเซ็ตเวลา
 handleUserActivity(); // เริ่มจับเวลา
 
 // ---------- 3.4 ระบบ PIN หัวหน้า สำหรับเอกสารลับ ----------
@@ -304,6 +304,7 @@ navFileBtn.addEventListener("click", function() {
 
   sidebar.classList.add("hidden");
   overLay.classList.add('hidden');
+  menuBtn.classList.remove("active"); // [แก้บั๊ก #5] คืนร่างปุ่ม 3 ขีด ไม่ให้ค้างเป็นตัว X
 });
 
 // เมนูด้านข้าง: ไปหน้าบันทึกงาน
@@ -317,6 +318,7 @@ navJobBtn.addEventListener("click", function() {
 
   sidebar.classList.add("hidden");
   overLay.classList.add('hidden');
+  menuBtn.classList.remove("active"); // [แก้บั๊ก #5] คืนร่างปุ่ม 3 ขีด ไม่ให้ค้างเป็นตัว X
 });
 
 // ปุ่ม ☰ ในหน้าคลังเอกสาร
@@ -337,6 +339,7 @@ function goToJobPage() {
 
   sidebar.classList.add("hidden");
   overLay.classList.add("hidden");
+  menuBtn.classList.remove("active"); // [แก้บั๊ก #5] คืนร่างปุ่ม 3 ขีด ไม่ให้ค้างเป็นตัว X
 }
 
 // กดโลโก้แบรนด์ -> กลับหน้าบันทึกงาน
@@ -576,7 +579,7 @@ saveBtn.addEventListener('click', function() {
   }
 
   totalCount++;
-  logCount.textContent = totalCount;
+  logCount.textContent = totalCount + "รายการ";
 
   docNameInput.value = "";
   docFilesInput.value = "";
