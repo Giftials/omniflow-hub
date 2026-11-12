@@ -408,6 +408,26 @@ button:active {
 }
 
 /* ===================================================
+   9.5 สถานะ ACTIVE ของเมนู & สีแจ้งเตือน (เพิ่มใหม่)
+   =================================================== */
+
+/* เมนูที่กำลังเปิดอยู่ใน Sidebar */
+.menu-item.active {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border-left: 4px solid #2563eb;
+}
+
+/* สีแจ้งเตือนตามประเภท */
+#toast.toast-success {
+  border-left: 5px solid var(--normal-green);
+}
+
+#toast.toast-error {
+  border-left: 5px solid var(--confidential-red);
+}
+
+/* ===================================================
    10. CASCADING ORDER GUARANTEE (กฎเหล็กล่างสุด)
    =================================================== */
 .hidden {
